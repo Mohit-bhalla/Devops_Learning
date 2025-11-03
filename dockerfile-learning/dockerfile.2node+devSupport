@@ -1,0 +1,30 @@
+# DEVELOPMENT STAGE 
+FROM node:18-alpine AS dev
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 5000
+CMD ["npm", "run", "dev"]
+
+# # For dev container
+# docker build -t myapp-dev --target=dev .
+# docker run -p 5000:5000 myapp-dev
+
+# PRODUCTION STAGE 
+FROM node:18-alpine AS prod
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+
+EXPOSE 5000
+CMD ["npm", "start"]
+
+# # For prod container
+# docker build -t myapp-prod --target=prod .
+# docker run -p 5000:5000 myapp-prod
+
+

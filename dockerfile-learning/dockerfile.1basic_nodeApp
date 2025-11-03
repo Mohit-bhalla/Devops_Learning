@@ -1,0 +1,28 @@
+# project/
+#  ┣ src/
+#  ┃ ┗ index.js
+#  ┣ package.json
+#  ┣ package-lock.json
+#  ┗ Dockerfile
+# Dockerfile for Node.js Application
+
+
+# Step 1: Use an official Node.js base image
+# Step 2: Set working directory inside container
+# Step 3: Copy package files first (for layer caching)
+# Step 4: Install only production dependencies
+# Step 5: Copy rest of the code
+# Step 6: Expose the port your app runs on
+# Step 7: Define start command
+
+
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+EXPOSE 5000 
+CMD ["npm", "start"]
+
+
+

@@ -1,0 +1,29 @@
+# production ready file with ngnix reverse proxy 
+
+# client + server served throgh single on url 
+
+version: "3.8"
+
+services:
+  backend:
+    build: ./server
+    contianer_name: production_backend
+    expose:
+      - "8000"
+  
+  frontend:
+    build: ./client
+    container_name: production_frontend
+    expose:
+      - "3000"
+  
+  ngnix:
+    image: nginix:latest
+    container_name: production_ngnix
+    ports:
+      - "80:80"
+    volumes:
+      - ./ngnix/ngnix.conf:/etc/ngnix/ngnix.conf
+    depends_on:
+      - backend
+      - frontend

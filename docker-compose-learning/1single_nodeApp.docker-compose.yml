@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  app:
+    build: .                 
+    container_name : node_app
+    ports:                   
+      - "5000:5000" 
+    environment:
+      - NODE_ENV=production
+    restarts: always         
+
+
+    #  simple nodejs app compose file
+
+    # 1.build docker file in current directory
+    # 2. map the port
+    # 3. set env variables 
+    # 4.restart auto when crashed

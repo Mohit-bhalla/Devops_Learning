@@ -1,0 +1,24 @@
+# /client  - React app
+# /server  - Node backend
+
+# FRONTEND BUILD STAGE 
+FROM node:18-alpine AS frontend
+WORKDIR /app
+COPY client/package*.json ./client/
+RUN cd client && npm install
+COPY client ./client
+RUN cd client && npm run build
+
+# BACKEND STAGE 
+FROM node:18-alpine AS backend
+WORKDIR /app
+
+COPY server/package*.json ./server/
+RUN cd server && npm ci --only=production
+COPY server ./server
+
+# Copy React build into backend public folder (if served by backend)
+COPY --from=frontend /app/client/build ./server/public
+
+EXPOSE 5000
+CMD ["node", "server/index.js"]

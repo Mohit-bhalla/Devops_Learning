@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./server
+    container_name: mern_backend
+    ports:
+      - "5000:5000"
+    environment:
+      -NODE_ENV=develpoement
+      -MONGO_URI=mongodb://mongo:27017/mern_db
+    depends_on:
+      - mongo
+    restart: always
+    volumes:
+      - ./server:/app   # auto reload code changes (dev mode)
+
+  mongo:
+    image: mongo:latest
+    contianer_name: mern_mongo
+    ports:
+      -"27017:27017"
+    volumes:
+      -mongo_data:/data/db
+
+volumes:
+  mongo_data:
+
+
+
+# node+mongodb setup
+
+#1.mongo db container image used from docker hub
+# 2. depends_on used so that mongo starts before backend
+ 
